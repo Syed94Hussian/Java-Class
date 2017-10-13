@@ -1,0 +1,69 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Test {
+
+	private JFrame frame;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Test window = new Test();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Test() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 399);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JButton btnProductCode = new JButton("Product Code");
+		btnProductCode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnProductCode.setBounds(286, 42, 117, 29);
+		frame.getContentPane().add(btnProductCode);
+		
+		JButton btnQuantaty = new JButton("Quantaty");
+		btnQuantaty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnQuantaty.setBounds(286, 83, 117, 23);
+		frame.getContentPane().add(btnQuantaty);
+		
+		JButton btnNo = new JButton("NO");
+		btnNo.setBounds(219, 118, 117, 29);
+		frame.getContentPane().add(btnNo);
+		
+		JButton btnYes = new JButton("YES");
+		btnYes.setBounds(62, 118, 117, 29);
+		frame.getContentPane().add(btnYes);
+	}
+}

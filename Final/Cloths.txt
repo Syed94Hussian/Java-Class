@@ -1,0 +1,3 @@
+jeans	made in bangladesh	20
+trousers	made in china	10
+straights	made in spain	35.5

@@ -1,0 +1,165 @@
+package ClothsIO;
+import javax.swing.*;
+import java.awt.event.*;
+
+public class calc implements ActionListener {
+	
+	JFrame frame;
+    JLabel heading, row1label, row2label, row3label;
+    JTextField row1text, row2text;
+    JRadioButton row3yes, row3no;
+    ButtonGroup bg;
+    JButton done, next;
+    
+    Invoice invoice = new Invoice();
+    
+    public calc() {
+		
+		frame = new JFrame();
+        
+        heading = new JLabel("Welcome to the Invoice Application");
+        heading.setBounds(30,20,280,30);
+        
+        row1label = new JLabel("Enter the product code:");
+        row1label.setBounds(30,60,200,30);
+        row1text = new JTextField();
+        row1text.setBounds(200,65,50,20);
+        
+        row2label = new JLabel("Enter the quantity:");
+        row2label.setBounds(30,80,200,30);
+        row2text = new JTextField();
+        row2text.setBounds(200,85,50,20);
+        
+        row3label = new JLabel("Another line item:");
+        row3label.setBounds(30,100,200,30);
+        row3yes = new JRadioButton("yes");
+        row3yes.setBounds(160,105,60,20);
+        row3no = new JRadioButton("no");
+        row3no.setBounds(210,105,60,20);
+        
+        bg = new ButtonGroup();
+        bg.add(row3yes);
+        bg.add(row3no);
+        row3yes.setSelected(true);
+        
+        done = new JButton("Done");
+        done.setBounds(50,140,80,20);
+        done.setEnabled(false);
+        next = new JButton("Next");
+        next.setBounds(150,140,80,20);
+        
+        frame.add(heading);
+        frame.add(row1label);
+        frame.add(row1text);
+        frame.add(row2label);
+        frame.add(row2text);
+        frame.add(row3label);
+        frame.add(row3yes);
+        frame.add(row3no);
+        frame.add(done);
+        frame.add(next);
+        
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setSize(350,250);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        
+        row3yes.addActionListener(this);
+        row3no.addActionListener(this);
+        done.addActionListener(this);
+        next.addActionListener(this);
+	}
+    
+    public void actionPerformed(ActionEvent e) {
+        if (row3yes.isSelected()) {
+            done.setEnabled(false);
+            next.setEnabled(true);
+        }
+        else if (row3no.isSelected()) {
+            done.setEnabled(true);
+            next.setEnabled(false);
+        }
+        
+        if (e.getSource() == next) {
+            getLineItems();
+        }
+        else if (e.getSource() == done) {
+            if (!row1text.getText().isEmpty() && !row2text.getText().isEmpty()) {
+                getLineItems();
+                displayInvoice();
+                //invoice = new Invoice();
+            }
+        }
+    }
+	
+	public void getLineItems() {
+		String productCode = row1text.getText();
+        
+        int quantity = Integer.parseInt(row2text.getText());
+        
+        Cloths product = ClothsIO.get(productCode);
+        
+        invoice.addItem(new LineItem(product, quantity));
+        
+        row1text.setText("");
+        row2text.setText("");
+	}
+
+	public void displayInvoice() {
+        
+        frame.setVisible(false);
+        
+        JFrame result = new JFrame();
+        
+        JLabel desc = new JLabel("Description");
+        desc.setBounds(20,20,150,30);
+        JLabel price = new JLabel("Price");
+        price.setBounds(170,20,80,30);
+        JLabel qty = new JLabel("Qty");
+        qty.setBounds(250,20,40,30);
+        JLabel total = new JLabel("Total");
+        total.setBounds(290,20,60,30);
+        
+        result.add(desc);
+        result.add(price);
+        result.add(qty);
+        result.add(total);
+        
+        int count = 0;
+		for (LineItem lineItem : invoice.getLineItems()) {
+			
+			Cloths product = lineItem.getProduct();
+			JLabel itemDesc = new JLabel(product.getDescription());
+            itemDesc.setBounds(20,50+(count*20),150,20);
+            
+			JLabel itemPrice = new JLabel(product.getPriceFormatted());
+            itemPrice.setBounds(170,50+(count*20),80,20);
+            
+			JLabel itemQty = new JLabel(lineItem.getQuantity());
+            itemQty.setBounds(250,50+(count*20),40,20);
+            
+			JLabel itemTotal = new JLabel(lineItem.getTotalFormatted());
+            itemTotal.setBounds(290,50+(count*20),60,20);
+            
+            result.add(itemDesc);
+            result.add(itemPrice);
+            result.add(itemQty);
+            result.add(itemTotal);
+			
+            count++;
+		}
+        
+        JLabel last = new JLabel("Invoice Total:   " + invoice.getPriceFormatted());
+        last.setBounds(20,70+(count*20),200,30);
+        result.add(last);
+        
+        result.setLayout(null);
+        result.setVisible(true);
+        result.setSize(400,200+(count*20));
+        result.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        
+	}
+    
+	
+}
+

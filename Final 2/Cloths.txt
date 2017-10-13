@@ -1,0 +1,4 @@
+jeans	made in bd	20.0
+pants	made in BD	10.0
+straight	made in itali	30.0
+trousers	made in china	10.0

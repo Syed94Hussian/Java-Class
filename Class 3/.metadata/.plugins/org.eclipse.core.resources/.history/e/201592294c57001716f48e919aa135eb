@@ -1,0 +1,66 @@
+import java.text.NumberFormat;
+import java.util.*;
+public class BookPrice {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		System.out.println("Welcome to Class 3.");
+		System.out.println();
+		
+		Scanner sc = new Scanner(System.in);
+		
+		String choice = "y";
+		
+		while(choice.equalsIgnoreCase("y")){
+			
+			//get input from the user
+			System.out.print("Enter product code: ");
+			
+			String productCode = sc.nextLine();
+			
+			System.out.print("Enter product quantity: ");
+			
+			int quantity = Integer.parseInt(sc.nextLine());
+			
+			//set the product price based on the product code
+			
+			double price;
+			if (productCode.equalsIgnoreCase("java")){
+				price = 57.50;
+			}
+			else if (productCode.equalsIgnoreCase("jsp")){
+				price = 57.50;
+			}
+			else if (productCode.equalsIgnoreCase("mysql")){
+				price = 54.50;
+			}
+			else {
+				price = 0.0;
+			}
+			
+			double total= price * quantity;
+			
+			//format and display
+			NumberFormat currency = NumberFormat.getCurrencyInstance();
+			String priceFormated= currency.format(price);
+			String totalFormated = currency.format(total);
+			String message = "\nLine Item\n" + 
+			"Code: "+ productCode + "\n"+
+			 
+			"Quantity: "+quantity + "\n"+
+			"Total: "+ totalFormated + "\n";
+			
+			System.out.println(message);
+			
+			System.out.print("Continue? y/n: ");
+			choice = sc.nextLine();
+			System.out.println();
+				 
+
+		}
+		
+		
+	}
+
+}

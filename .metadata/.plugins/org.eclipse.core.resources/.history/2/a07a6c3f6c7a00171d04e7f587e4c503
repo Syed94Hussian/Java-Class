@@ -1,0 +1,137 @@
+package ClothsIO;
+
+import java.util.List;
+
+import ClothsIO.ClothsIO;
+public class Main 
+{
+
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+//Display a welcome message
+		
+		System.out.println("Welcome to the Product Manager\n");
+		
+		
+		
+		displayMenu();
+		
+		
+		String action = "";
+		while (!action.equalsIgnoreCase("exit"))
+		{
+			
+			action = Console.getString("Enter a command: ");
+			System.out.println();
+			
+			if(action.equalsIgnoreCase("List"))
+			{
+				displayAllCloths();
+			}
+				
+			else if (action.equalsIgnoreCase("add"))
+			{
+				addCloth();
+			}
+				
+			else if (action.equalsIgnoreCase("del") || action.equalsIgnoreCase("delete") )
+			{
+				deleteCloth();
+			}	
+			else if (action.equalsIgnoreCase("help") || action.equalsIgnoreCase("menu") )
+			{
+				displayMenu();
+			}	
+			
+			else if (action.equalsIgnoreCase("exit"))
+			{
+				System.out.println("Bye.\n");	
+			}
+			else
+			{
+				System.out.println("Error! Not a valid command. \n");	
+			}
+				
+		}
+				
+	}
+
+	public static void displayMenu()
+	{
+		System.out.println("COMMAND MENU");
+		System.out.println("list   -List all products");
+		System.out.println("add    -add a product");
+		System.out.println("del    -delete a  product");
+		System.out.println("help   -show this menu");
+		System.out.println("exit   -Exit this application");
+	}
+	
+	public static void displayAllCloths()
+	{
+		System.out.println("PRODUCT LIST");
+		
+		List< Cloths > products = ClothsIO.getAll();
+		
+		if(products == null)
+		{
+			System.out.println("\nError! Unable to get products.\n");
+	    }
+		else
+		{
+			Cloths p;
+			StringBuilder sb = new StringBuilder();
+			for (Cloths product : products)
+			{
+				p = product;
+				sb.append(StringUtil.Pad(p.getCode(), 12));
+				sb.append(StringUtil.Pad(p.getDescription(), 25));
+				sb.append(p.getPriceFormatted());
+				sb.append("\n");
+				
+			}
+			
+			System.out.println(sb.toString());
+		}
+	}
+	
+	public static void addCloth()
+	{
+	
+		String code = Console.getString("Enter product code: ");
+		String description = Console.getString("Enter product description: ");
+		double price = Console.getDouble("Enter price: ");
+		
+		Cloths product = new Cloths();
+		product.setCode(code);
+		product.setDescription(description);
+		product.setPrice(price);
+		
+		ClothsIO.add(product);
+		System.out.println("\n" + description  + "was added to the database.\n");
+		
+		
+		
+		
+	}
+	
+	public static void deleteCloth()
+	{
+		String code = Console.getString("Enter product code to delete: ");
+		
+		Cloths cloth = ClothsIO.get(code);
+		if (cloth ==  null)
+		{
+			System.out.println("\nError: Unable to get product.");
+		}
+		else
+		{
+			ClothsIO.delete(cloth);
+			System.out.println("\n" + cloth.getDescription() + " was deleted from the database. \n");
+		}
+	}
+	
+	
+	
+}
+
